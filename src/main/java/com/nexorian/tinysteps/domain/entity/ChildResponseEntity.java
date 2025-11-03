@@ -1,5 +1,6 @@
 package com.nexorian.tinysteps.domain.entity;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -43,5 +44,7 @@ public class ChildResponseEntity {
     @ManyToOne
     @JoinColumn(name="child_id", referencedColumnName = "id", nullable = false)
     private ChildEntity child;
+
+    private Date achievedOn;
 }
 

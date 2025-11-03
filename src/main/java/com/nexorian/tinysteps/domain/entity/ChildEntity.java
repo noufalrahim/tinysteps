@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nexorian.tinysteps.domain.enums.GenderEnum;
 
 import jakarta.persistence.Column;
@@ -49,5 +50,6 @@ public class ChildEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private UserEntity user;
 }

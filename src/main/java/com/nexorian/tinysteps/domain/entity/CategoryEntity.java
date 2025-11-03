@@ -30,4 +30,6 @@ public class CategoryEntity {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    private String description;
 }

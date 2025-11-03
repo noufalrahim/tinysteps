@@ -17,19 +17,39 @@ public class FilterSpecification<T> implements Specification<T> {
     }
 
     @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        Path<?> path = root.get(condition.getField());
-        Object[] values = condition.getValues();
+public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+    String field = condition.getField();
+    Path<?> path = root;
 
-        return switch (condition.getOperator()) {
-            case EQ -> cb.equal(path, values[0]);
-            case NE -> cb.notEqual(path, values[0]);
-            case GT -> cb.greaterThan(path.as(Comparable.class), (Comparable) values[0]);
-            case GTE -> cb.greaterThanOrEqualTo(path.as(Comparable.class), (Comparable) values[0]);
-            case LT -> cb.lessThan(path.as(Comparable.class), (Comparable) values[0]);
-            case LTE -> cb.lessThanOrEqualTo(path.as(Comparable.class), (Comparable) values[0]);
-            case LIKE -> cb.like(cb.lower(path.as(String.class)), "%" + values[0].toString().toLowerCase() + "%");
-            case BETWEEN -> cb.between(path.as(Comparable.class), (Comparable) values[0], (Comparable) values[1]);
-        };
+    // Traverse nested fields
+    if (field.contains(".")) {
+        String[] parts = field.split("\\.");
+        for (String part : parts) {
+            path = path.get(part);
+        }
+    } else {
+        path = root.get(field);
     }
+
+    Object[] values = condition.getValues();
+
+    return switch (condition.getOperator()) {
+        case EQ -> {
+            // Convert UUID string to UUID if needed
+            Object value = values[0];
+            if (path.getJavaType().equals(java.util.UUID.class) && value instanceof String) {
+                value = java.util.UUID.fromString((String) value);
+            }
+            yield cb.equal(path, value);
+        }
+        case NE -> cb.notEqual(path, values[0]);
+        case GT -> cb.greaterThan(path.as(Comparable.class), (Comparable) values[0]);
+        case GTE -> cb.greaterThanOrEqualTo(path.as(Comparable.class), (Comparable) values[0]);
+        case LT -> cb.lessThan(path.as(Comparable.class), (Comparable) values[0]);
+        case LTE -> cb.lessThanOrEqualTo(path.as(Comparable.class), (Comparable) values[0]);
+        case LIKE -> cb.like(cb.lower(path.as(String.class)), "%" + values[0].toString().toLowerCase() + "%");
+        case BETWEEN -> cb.between(path.as(Comparable.class), (Comparable) values[0], (Comparable) values[1]);
+    };
+}
+
 }

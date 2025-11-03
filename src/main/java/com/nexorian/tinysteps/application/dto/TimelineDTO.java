@@ -12,11 +12,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChildResponseDTO {
+public class TimelineDTO {
     private UUID id;
-    private QuestionDTO question;
-    private Boolean questionAnswered;
-    private Boolean answeredYes;
-    private ChildDTO childId;
-    private Date achievedOn;
+    private ChildDTO child;
+    private String title;
+    private String description;
+    private Date date;
 }

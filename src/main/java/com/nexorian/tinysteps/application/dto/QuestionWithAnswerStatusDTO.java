@@ -12,11 +12,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChildResponseDTO {
+public class QuestionWithAnswerStatusDTO {
     private UUID id;
-    private QuestionDTO question;
-    private Boolean questionAnswered;
-    private Boolean answeredYes;
-    private ChildDTO childId;
+    private String questionEnglish;
+    private String questionMalayalam;
+    private Integer severity;
+    private Boolean answered;
     private Date achievedOn;
 }

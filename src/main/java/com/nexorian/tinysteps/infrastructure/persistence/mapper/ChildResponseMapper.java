@@ -23,7 +23,8 @@ public class ChildResponseMapper {
             questionDTO,
             childResponse.getQuestionAnswered(),
             childResponse.getAnsweredYes(),
-            childDTO
+            childDTO,
+            childResponse.getAchievedOn()
         );
     }
 }

@@ -1,11 +1,9 @@
 package com.nexorian.tinysteps.domain.entity;
 
-
+import java.util.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,18 +12,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = "timelines")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserEntity {
+public class TimelineEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -34,11 +30,13 @@ public class UserEntity {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "default_child_id", referencedColumnName = "id")
-    @JsonManagedReference
-    private ChildEntity defaultChild;
+    @JoinColumn(name = "child_id", referencedColumnName = "id")
+    private ChildEntity child;
 
-    @Column(unique = true, nullable = false)
-    private String phone;
+    @Column(nullable=false)
+    private String title;
 
+    private String description;
+
+    private Date date;
 }

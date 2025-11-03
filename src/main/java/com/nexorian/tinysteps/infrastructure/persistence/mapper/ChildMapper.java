@@ -18,4 +18,18 @@ public class ChildMapper {
             child.getUser() != null ? child.getUser().getId() : null
         );
     }
+
+    public static ChildEntity toEntity(ChildDTO dto) {
+        if (dto == null) return null;
+
+        ChildEntity entity = new ChildEntity();
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setGender(dto.getGender());
+        entity.setDateOfBirth(dto.getDateOfBirth());
+        entity.setPremature(dto.isPremature());
+        entity.setWeekOfPrematurity(dto.getWeekOfPrematurity());
+        // user will be set in controller
+        return entity;
+    }
 }
