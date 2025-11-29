@@ -1,20 +1,6 @@
 version: '3.9'
 
 services:
-  postgres:
-    image: postgres:17-alpine
-    container_name: tinysteps-postgres
-    environment:
-      POSTGRES_DB: tinystepsdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: tinysteps@nexorian.1
-    ports:
-      - "5432:5432"
-    networks:
-      - tinysteps-network
-    volumes:
-      - pgdata:/var/lib/postgresql/data 
-
   app:
     build:
       context: .
@@ -23,22 +9,17 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tinystepsdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: tinysteps@nexorian.1
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ep-steep-dream-a88dbjow-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require
+      SPRING_DATASOURCE_USERNAME: neondb_owner
+      SPRING_DATASOURCE_PASSWORD: npg_gVabIey6cqQ1
       SPRING_DEVTOOLS_RESTART_ENABLED: "true"
-    depends_on:
-      - postgres
     networks:
       - tinysteps-network
     volumes:
-      - .:/app                    # mount source for hot reload
-      - ~/.m2:/root/.m2           # cache Maven dependencies
+      - .:/app
+      - ~/.m2:/root/.m2
     command: ./mvnw spring-boot:run -Dspring-boot.run.fork=false
 
 networks:
   tinysteps-network:
     driver: bridge
-
-volumes:
-  pgdata:
