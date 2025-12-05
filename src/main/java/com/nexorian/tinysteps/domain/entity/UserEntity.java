@@ -33,6 +33,18 @@ public class UserEntity {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
+    @Column(nullable = true)
+    private String name;
+
+    @Column(nullable = true)
+    private String email;
+
+    @Column(nullable = true)
+    private String password;
+
+    // @Column(nullable = true)
+    // private String address;
+
     @OneToOne
     @JoinColumn(name = "default_child_id", referencedColumnName = "id")
     @JsonManagedReference

@@ -48,6 +48,9 @@ public class ChildEntity {
     @Column
     private Integer weekOfPrematurity;
 
+    @Column(nullable = true)
+    private String profileImageUrl;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
