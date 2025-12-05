@@ -42,8 +42,8 @@ public class UserEntity {
     @Column(nullable = true)
     private String password;
 
-    @Column(nullable = true)
-    private String address;
+    // @Column(nullable = true)
+    // private String address;
 
     @OneToOne
     @JoinColumn(name = "default_child_id", referencedColumnName = "id")
