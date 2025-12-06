@@ -33,13 +33,13 @@ public class UserEntity {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String password;
 
     // @Column(nullable = true)
