@@ -24,7 +24,9 @@ public class QuestionMapper {
             question.getQuestionMalayalam(),
             question.getSeverity(),
             categoryDTO,
-            ageGroupDTO
+            ageGroupDTO,
+            question.getDescription(),
+            question.getImage()
         );
     }
 }

@@ -35,33 +35,40 @@ public class QuestionServiceImpl extends BaseServiceImpl<QuestionEntity, UUID> i
         this.childRepository = childRepository;
     }
 
-@Override
-public ServiceResponse<List<QuestionWithAnswerStatusDTO>> getQuestionsForChild(UUID childId, UUID categoryId) {
+    @Override
+    public ServiceResponse<List<QuestionWithAnswerStatusDTO>> getQuestionsForChild(UUID childId, UUID categoryId) {
 
-    ServiceResponse<List<QuestionWithAnswerStatusDTO>> response = new ServiceResponse<>();
-    try {
-        ChildEntity child = childRepository.findById(childId)
-                .orElseThrow(() -> new RuntimeException("Child not found"));
+        ServiceResponse<List<QuestionWithAnswerStatusDTO>> response = new ServiceResponse<>();
+        try {
+            ChildEntity child = childRepository.findById(childId)
+                    .orElseThrow(() -> new RuntimeException("Child not found"));
 
-        int ageMonths = Period.between(child.getDateOfBirth(), LocalDate.now()).getMonths()
-                + Period.between(child.getDateOfBirth(), LocalDate.now()).getYears() * 12;
+            int ageMonths = Period.between(child.getDateOfBirth(), LocalDate.now()).getMonths()
+                    + Period.between(child.getDateOfBirth(), LocalDate.now()).getYears() * 12;
 
-        System.out.println("childId: " + childId + ", categoryId: " + categoryId + ", ageMonths: " + ageMonths);
+            System.out.println("childId: " + childId + ", categoryId: " + categoryId + ", ageMonths: " + ageMonths);
 
-        log.info("childId: {}, categoryId: {}, ageMonths: {}", childId, categoryId, ageMonths);
+            log.info("childId: {}, categoryId: {}, ageMonths: {}", childId, categoryId, ageMonths);
+            List<QuestionWithAnswerStatusDTO> questions;
 
-        List<QuestionWithAnswerStatusDTO> questions =
-                questionRepository.findQuestionsForChild(childId, ageMonths, categoryId);
-
-        response.setData(questions);
-        response.setMessage("Questions fetched successfully");
-    } catch (Exception e) {
-        response.setStatus(ServiceResponse.ResStatus.ERROR);
-        response.setMessage("Failed to fetch questions");
-        response.setErrorStackTrace(e.toString());
+            if (categoryId == null) {
+                questions = questionRepository.findQuestionsForChildAcrossAllCategories(
+                        childId,
+                        ageMonths);
+            } else {
+                questions = questionRepository.findQuestionsForChild(
+                        childId,
+                        ageMonths,
+                        categoryId);
+            }
+            response.setData(questions);
+            response.setMessage("Questions fetched successfully");
+        } catch (Exception e) {
+            response.setStatus(ServiceResponse.ResStatus.ERROR);
+            response.setMessage("Failed to fetch questions");
+            response.setErrorStackTrace(e.toString());
+        }
+        return response;
     }
-    return response;
-}
-
 
 }

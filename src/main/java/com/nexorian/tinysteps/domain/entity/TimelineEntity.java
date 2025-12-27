@@ -33,7 +33,6 @@ public class TimelineEntity {
     @JoinColumn(name = "child_id", referencedColumnName = "id")
     private ChildEntity child;
 
-    @Column(nullable=false)
     private String title;
 
     private String description;

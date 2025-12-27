@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,18 +35,18 @@ public class UserController extends BaseController<UserEntity, UserDTO, UUID> {
     /**
      * Update the default child of a user.
      *
-     * @param userId UUID of the user
+     * @param userId   UUID of the user
      * @param childDTO ChildDTO containing the child information
      * @return ServiceResponse<UserEntity>
      */
-    @PutMapping("/{userId}/default-child")
+    @PatchMapping("/{userId}/default-child")
     public ResponseEntity<ServiceResponse<UserEntity>> updateDefaultChild(
             @PathVariable UUID userId,
             @RequestBody ChildDTO childDTO) {
 
         ServiceResponse<Optional<UserEntity>> userResponse = userService.findById(userId);
 
-        if (userResponse.getData() == null) {
+        if (userResponse.getData() == null || userResponse.getData().isEmpty()) {
             ServiceResponse<UserEntity> response = new ServiceResponse<>();
             response.setStatus(ServiceResponse.ResStatus.ERROR);
             response.setMessage("User not found");
@@ -64,4 +65,5 @@ public class UserController extends BaseController<UserEntity, UserDTO, UUID> {
                 .status(response.getStatusCode() > 0 ? response.getStatusCode() : 200)
                 .body(response);
     }
+
 }

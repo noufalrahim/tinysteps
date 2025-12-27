@@ -33,22 +33,17 @@ public class ChildEntity {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private GenderEnum gender;
 
-    @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false)
     private boolean isPremature;
 
     @Column
     private Integer weekOfPrematurity;
 
-    @Column(nullable = true)
     private String profileImageUrl;
 
     @ManyToOne

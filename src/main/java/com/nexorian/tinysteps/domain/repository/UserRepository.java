@@ -10,4 +10,5 @@ import com.nexorian.tinysteps.domain.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, UUID>, JpaSpecificationExecutor<UserEntity> {
     Optional<UserEntity> findByPhone(String phone);
+    Optional<UserEntity> findByEmail(String email);
 }

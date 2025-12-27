@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +26,10 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<ServiceResponse<UserEntity>> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<ServiceResponse<Map<String, Object>>> login(@RequestBody Map<String, String> body) {
 
-        String phone = body.get("phone"); 
-        ServiceResponse<UserEntity> response = authService.login(phone);
+        String phone = body.get("phone");
+        ServiceResponse<Map<String, Object>> response = authService.login(phone);
 
         HttpStatus status = HttpStatus.OK;
 
@@ -40,8 +41,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ServiceResponse<UserEntity>> register(@RequestBody UserEntity user) {
-        ServiceResponse<UserEntity> response = authService.register(user);
+    public ResponseEntity<ServiceResponse<Map<String, Object>>> register(@RequestBody UserEntity user) {
+        ServiceResponse<Map<String, Object>> response = authService.register(user);
         HttpStatus status = HttpStatus.CREATED;
 
         if (response.getStatus() == ServiceResponse.ResStatus.ERROR) {
@@ -50,4 +51,33 @@ public class AuthController {
 
         return new ResponseEntity<>(response, status);
     }
+
+    @PostMapping("/validate")
+    public ResponseEntity<ServiceResponse<UserEntity>> validateToken(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        if (authorizationHeader == null || authorizationHeader.isBlank()) {
+            ServiceResponse<UserEntity> response = new ServiceResponse<>();
+            response.setStatus(ServiceResponse.ResStatus.ERROR);
+            response.setMessage("Missing Authorization header");
+            response.setStatusCode(401);
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        String token = authorizationHeader.trim();
+
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7).trim();
+        }
+
+        ServiceResponse<UserEntity> response = authService.validateToken(token);
+
+        HttpStatus status = HttpStatus.OK;
+        if (response.getStatus() == ServiceResponse.ResStatus.ERROR) {
+            status = HttpStatus.valueOf(
+                    response.getStatusCode() > 0 ? response.getStatusCode() : 400);
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
 }

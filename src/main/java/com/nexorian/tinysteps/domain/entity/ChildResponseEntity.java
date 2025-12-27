@@ -35,7 +35,6 @@ public class ChildResponseEntity {
     @JoinColumn(name="question_id", referencedColumnName = "id", nullable=false)
     private QuestionEntity question;
 
-    @Column(nullable=false)
     private Boolean questionAnswered;
 
     @Column

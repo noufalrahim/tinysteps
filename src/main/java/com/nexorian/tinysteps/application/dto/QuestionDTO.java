@@ -18,4 +18,6 @@ public class QuestionDTO {
     private Integer severity;
     private CategoryDTO category;
     private AgeGroupDTO ageGroup;
+    private String description;
+    private String image;
 }

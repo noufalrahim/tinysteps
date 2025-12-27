@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexorian.tinysteps.application.dto.QuestionDTO;
@@ -27,11 +28,11 @@ public class QuestionController extends BaseController<QuestionEntity, QuestionD
         this.questionService = questionService;
     }
 
-    // Specific endpoint with path variables
-    @GetMapping("/child/{childId}/category/{categoryId}")
-    public ServiceResponse<List<QuestionWithAnswerStatusDTO>> getQuestionsForChildAndCategory(
+    @GetMapping("/children/{childId}")
+    public ServiceResponse<List<QuestionWithAnswerStatusDTO>> getQuestionsForChild(
             @PathVariable UUID childId,
-            @PathVariable UUID categoryId) {
+            @RequestParam(required = false) UUID categoryId) {
         return questionService.getQuestionsForChild(childId, categoryId);
     }
+
 }
