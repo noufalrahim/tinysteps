@@ -18,7 +18,8 @@ public class TimelineMapper {
                 childDTO,
                 timeline.getTitle(),
                 timeline.getDescription(),
-                timeline.getDate()
+                timeline.getDate(),
+                timeline.getImage()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.nexorian.tinysteps.application.dto;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -11,10 +12,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class PostDTO {
     private UUID id;
-    private ChildDTO defaultChild;
-    private String phone;
-    private String name;
-    private String email;
+    private UserDTO user;
+    private ChildDTO child;
+    private String content;
+    private String image;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

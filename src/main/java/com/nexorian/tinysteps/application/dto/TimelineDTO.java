@@ -18,4 +18,5 @@ public class TimelineDTO {
     private String title;
     private String description;
     private Date date;
+    private String image;
 }

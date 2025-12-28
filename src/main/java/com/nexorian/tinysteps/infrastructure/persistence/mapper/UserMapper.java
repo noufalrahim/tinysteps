@@ -16,7 +16,9 @@ public class UserMapper {
         return new UserDTO(
             user.getId(),
             defaultChildDTO,
-            user.getPhone()
+            user.getPhone(),
+            user.getName(),
+            user.getEmail()
         );
     }
 }
