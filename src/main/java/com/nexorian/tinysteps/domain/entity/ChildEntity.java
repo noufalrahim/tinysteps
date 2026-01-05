@@ -1,6 +1,5 @@
 package com.nexorian.tinysteps.domain.entity;
 
-
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -39,7 +38,7 @@ public class ChildEntity {
 
     private LocalDate dateOfBirth;
 
-    private boolean isPremature;
+    private boolean premature;
 
     @Column
     private Integer weekOfPrematurity;
@@ -50,4 +49,16 @@ public class ChildEntity {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private UserEntity user;
+
+    @Override
+    public String toString() {
+        return "ChildEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender='" + gender + '\'' +
+                ", premature=" + premature +
+                ", weekOfPrematurity=" + weekOfPrematurity +
+                '}';
+    }
 }

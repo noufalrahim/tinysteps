@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.nexorian.tinysteps.application.service.base.BaseService;
 import com.nexorian.tinysteps.application.wrapper.ServiceResponse;
+import com.nexorian.tinysteps.infrastructure.helper.Helper;
 import com.nexorian.tinysteps.infrastructure.persistence.filter.FilterCondition;
 import com.nexorian.tinysteps.infrastructure.persistence.filter.FilterSpecification;
 
@@ -34,8 +35,8 @@ public class BaseServiceImpl<T, ID> implements BaseService<T, ID> {
     private final Class<T> entityClass;
 
     public BaseServiceImpl(JpaRepository<T, ID> repository,
-                           JpaSpecificationExecutor<T> specRepository,
-                           Class<T> entityClass) {
+            JpaSpecificationExecutor<T> specRepository,
+            Class<T> entityClass) {
         this.repository = repository;
         this.specRepository = specRepository;
         this.entityClass = entityClass;
@@ -93,11 +94,21 @@ public class BaseServiceImpl<T, ID> implements BaseService<T, ID> {
     }
 
     @Override
-    public ServiceResponse<T> updateById(ID id, T entity) {
-        if (!repository.existsById(id)) {
+    public ServiceResponse<T> updateById(ID id, T incoming) {
+        log.info("Updating entity with ID: {}", id);
+
+        Optional<T> existingOpt = repository.findById(id);
+        if (existingOpt.isEmpty()) {
             return buildErrorResponse("Entity with ID " + id + " not found");
         }
-        T saved = repository.save(entity);
+
+        T existing = existingOpt.get();
+
+        Helper.mergeNonNullProperties(incoming, existing);
+
+        T saved = repository.save(existing);
+        forceLoadRelations(saved);
+
         return buildResponse(saved);
     }
 
@@ -128,7 +139,8 @@ public class BaseServiceImpl<T, ID> implements BaseService<T, ID> {
         }
 
         if (orderBy != null) {
-            jpql += " ORDER BY e." + orderBy + " " + (orderDir != null && orderDir.equalsIgnoreCase("desc") ? "DESC" : "ASC");
+            jpql += " ORDER BY e." + orderBy + " "
+                    + (orderDir != null && orderDir.equalsIgnoreCase("desc") ? "DESC" : "ASC");
         }
 
         TypedQuery<T> query = entityManager.createQuery(jpql, entityClass);
@@ -165,9 +177,11 @@ public class BaseServiceImpl<T, ID> implements BaseService<T, ID> {
                     try {
                         Field relationField = entity.getClass().getDeclaredField(relationName);
                         relationField.setAccessible(true);
-                        Object relatedEntity = entityManager.find(relationField.getType(), UUID.fromString(idValue.toString()));
+                        Object relatedEntity = entityManager.find(relationField.getType(),
+                                UUID.fromString(idValue.toString()));
                         relationField.set(entity, relatedEntity);
-                    } catch (NoSuchFieldException ignored) {}
+                    } catch (NoSuchFieldException ignored) {
+                    }
                 }
             }
         }
@@ -181,10 +195,12 @@ public class BaseServiceImpl<T, ID> implements BaseService<T, ID> {
                     Object relation = field.get(entity);
                     if (relation != null) {
                         relation = entityManager.find(relation.getClass(),
-                                entityManager.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(relation));
+                                entityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+                                        .getIdentifier(relation));
                         field.set(entity, relation);
                     }
-                } catch (IllegalAccessException | IllegalArgumentException ignored) {}
+                } catch (IllegalAccessException | IllegalArgumentException ignored) {
+                }
             }
         }
     }

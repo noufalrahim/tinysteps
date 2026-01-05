@@ -19,7 +19,7 @@ public class ChildDTO {
     private String name;
     private GenderEnum gender;
     private LocalDate dateOfBirth;
-    private boolean isPremature;
+    private boolean premature;
     private Integer weekOfPrematurity;
     private UUID userId;
 }

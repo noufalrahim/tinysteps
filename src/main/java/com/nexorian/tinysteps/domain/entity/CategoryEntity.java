@@ -35,4 +35,6 @@ public class CategoryEntity {
 
     @Column(columnDefinition = "TEXT")
     private String image;
+
+    private Double weight;
 }
