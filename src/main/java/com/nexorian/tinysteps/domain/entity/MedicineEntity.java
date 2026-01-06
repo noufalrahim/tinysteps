@@ -1,16 +1,17 @@
 package com.nexorian.tinysteps.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import java.util.UUID;
+
 import org.hibernate.annotations.GenericGenerator;
 
-import com.nexorian.tinysteps.application.dto.AgeGroupDTO;
-
-import java.util.UUID;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class MedicineEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
-    
+
     @Column(nullable = false)
     private String name;
 
@@ -38,7 +39,7 @@ public class MedicineEntity {
     @Column(nullable = false)
     private String type;
 
-    @ManyToMany // Assuming a medicine can belong to multiple age groups
-    @Column(name = "age_group", nullable = false)
-    private AgeGroupDTO ageGroup;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "age_group_id")
+    private AgeGroupEntity ageGroup;
 }
