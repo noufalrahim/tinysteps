@@ -12,7 +12,7 @@ public class MedicineMapper {
             medicine.getName(),
             medicine.getDescription(),
             medicine.getType(),
-            medicine.getAgeGroup()
+            medicine.getAgeGroups()
         );
     }
 }

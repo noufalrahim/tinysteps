@@ -3,6 +3,8 @@ package com.nexorian.tinysteps.domain.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -38,7 +40,11 @@ public class MedicineEntity {
     @Column(nullable = false)
     private String type;
 
-    @ManyToMany // Assuming a medicine can belong to multiple age groups
-    @Column(name = "age_group", nullable = false)
-    private AgeGroupDTO ageGroup;
+    @ManyToMany 
+    @JoinTable(
+        name = "medicine_age_group_link", 
+        joinColumns = @JoinColumn(name = "medicine_id"),
+        inverseJoinColumns = @JoinColumn(name = "age_group_id")
+    )   
+    private java.util.Set<AgeGroupEntity> ageGroups = new java.util.HashSet<>();
 }

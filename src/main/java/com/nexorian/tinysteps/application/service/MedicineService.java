@@ -2,6 +2,8 @@ package com.nexorian.tinysteps.application.service;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.nexorian.tinysteps.application.service.base.BaseService;
 import com.nexorian.tinysteps.domain.entity.MedicineEntity;
 

@@ -1,6 +1,10 @@
 package com.nexorian.tinysteps.application.dto;
 
+import java.util.Set;
 import java.util.UUID;
+
+import com.nexorian.tinysteps.domain.entity.AgeGroupEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +19,5 @@ public class MedicineDTO {
     private String name;
     private String description;
     private String type;
-    private AgeGroupDTO ageGroup;
+    private Set<AgeGroupEntity> ageGroups;
 }
