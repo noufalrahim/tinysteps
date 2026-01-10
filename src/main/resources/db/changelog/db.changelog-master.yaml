@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: data/001_seed_categories.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: data/002_seed_agegroups.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: data/003_seed_questions.sql
+      relativeToChangelogFile: true

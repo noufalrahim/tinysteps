@@ -3,6 +3,8 @@ package com.nexorian.tinysteps.domain.repository;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
 import com.nexorian.tinysteps.domain.entity.TipsEntity;
 
-public interface TipsRepository extends JpaRepository<TipsEntity, UUID> {}
+public interface TipsRepository extends JpaRepository<TipsEntity, UUID>, JpaSpecificationExecutor<TipsEntity> {}

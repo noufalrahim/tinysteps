@@ -11,11 +11,8 @@ import com.nexorian.tinysteps.domain.entity.ArticleEntity;
 import com.nexorian.tinysteps.domain.repository.ArticleRepository;
 
 @Service
-public class ArticleServiceImpl
-        extends BaseServiceImpl<ArticleEntity, UUID>
-        implements ArticleService {
-
-    public ArticleServiceImpl(ArticleRepository articleRepository, JpaSpecificationExecutor<ArticleEntity> specRepository) {
+public class ArticleServiceImpl extends BaseServiceImpl<ArticleEntity, UUID> implements ArticleService {
+    public ArticleServiceImpl(ArticleRepository articleRepository, JpaSpecificationExecutor<ArticleEntity> specRepository){
         super(articleRepository, specRepository, ArticleEntity.class);
     }
 }
